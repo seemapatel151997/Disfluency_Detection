@@ -28,7 +28,7 @@ C_IP - the word is both in the reparandum and repair and the last before the int
 
 #### word embeddings
 
-Download the glove embedding zip file [glove.6B.zip](http://nlp.stanford.edu/data/glove.6B.zip) and extract *glove.6B.100d.txt* in the *models* directory.
+Download the glove embedding zip file [glove.6B.zip](https://nlp.stanford.edu/projects/glove/) and extract *glove.6B.100d.txt* in the *models* directory.
 
 #### Training:
 
