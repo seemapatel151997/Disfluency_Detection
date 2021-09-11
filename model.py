@@ -119,20 +119,31 @@ class BiLSTM_CRF(nn.Module):
 
         if self.char_mode == 'LSTM':
             # self.char_lstm_hidden = self.init_lstm_hidden(dim=self.char_lstm_dim, bidirection=True, batchsize=chars2.size(0))
+            print(chars2.size())
             chars_embeds = self.char_embeds(chars2).transpose(0, 1)
+            print(chars_embeds.size())
             packed = torch.nn.utils.rnn.pack_padded_sequence(chars_embeds, chars2_length)
+            print(packed.size())
             lstm_out, _ = self.char_lstm(packed)
+            print(lstm_out.size())
             outputs, output_lengths = torch.nn.utils.rnn.pad_packed_sequence(lstm_out)
+            print(outputs.size())
             outputs = outputs.transpose(0, 1)
+            print(outputs.size())
             chars_embeds_temp = Variable(torch.FloatTensor(torch.zeros((outputs.size(0), outputs.size(2)))))
+            print(chars_embeds_temp.size())
             if self.use_gpu:
                 chars_embeds_temp = chars_embeds_temp.cuda()
+                print(chars_embeds_temp.size())
             for i, index in enumerate(output_lengths):
                 chars_embeds_temp[i] = torch.cat((outputs[i, index-1, :self.char_lstm_dim], outputs[i, 0, self.char_lstm_dim:]))
+            print(chars_embeds_temp.size())
             chars_embeds = chars_embeds_temp.clone()
+            print(chars_embeds.size())
             for i in range(chars_embeds.size(0)):
                 chars_embeds[d[i]] = chars_embeds_temp[i]
-
+            print(chars_embeds.size())
+            
         if self.char_mode == 'CNN':
             chars_embeds = self.char_embeds(chars2).unsqueeze(1)
             chars_cnn_out3 = self.char_cnn3(chars_embeds)
